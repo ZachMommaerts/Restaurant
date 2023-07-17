@@ -11,6 +11,7 @@ struct GalleryView: View {
     
     @State var photoData = [String]()
     @State var sheetVisible = false
+    @State var selectedPhoto = ""
     var dataService = DataService()
     
     var body: some View {
@@ -32,6 +33,7 @@ struct GalleryView: View {
                                 .frame(maxWidth: (proxy.size.width-20)/3)
                                 .clipped()
                                 .onTapGesture {
+                                    selectedPhoto = photo
                                     sheetVisible = true
                                 }
                         }
@@ -44,7 +46,8 @@ struct GalleryView: View {
             photoData = dataService.getPhotos()
         }
         .sheet(isPresented: $sheetVisible) {
-            PhotoView()
+            PhotoView(selectedPhoto: $selectedPhoto,
+                      sheetVisible: $sheetVisible)
         }
     }
 }
